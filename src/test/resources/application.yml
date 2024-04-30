@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: cash-manager-backend
+  profiles:
+    active: test
+  datasource:
+    url: jdbc:h2:mem:test_bd;DB_CLOSE_DELAY=-1
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+  flyway:
+    enabled: false
+min-age: 18
