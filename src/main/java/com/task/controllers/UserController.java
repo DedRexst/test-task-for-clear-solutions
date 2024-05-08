@@ -8,6 +8,7 @@ import com.task.dtos.response.GetUserDTO;
 import com.task.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public AddUserDTO addUser(@RequestBody @Valid AddAndPutUserDTO addUserDTO) {
         return userService.addUser(addUserDTO);
     }

@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.dtoToEntity(addUserDTO);
         if (Period.between(user.getBirthDate(), LocalDate.now()).getYears() >= minAge) {// I try to refactor this peace of code in to method, but he has some differences
             user = userRepository.save(user);
-            return new AddUserDTO(HttpStatus.CREATED.value(), HttpStatus.CREATED, "/api/v1/user/" + user.getId());
+            return new AddUserDTO("/api/v1/user/" + user.getId());
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is to young");
         }
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
         } else if (rangeDatesDTO.to() != null){
             return convertListUserToGetUserDTO(userRepository.findAllByBirthDateLessThanEqual(rangeDatesDTO.to()));
         }
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Whoops something go wrong");
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "From and to is null");
     }
 
     private User findById(UUID id) {

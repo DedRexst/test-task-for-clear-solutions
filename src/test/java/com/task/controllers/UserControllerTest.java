@@ -50,17 +50,15 @@ class UserControllerTest {
     void addUser() throws Exception {
         AddAndPutUserDTO addUserDTO = new AddAndPutUserDTO("email@email.com", "firstName",
                 "LastName", LocalDate.now(), null, null);
-        AddUserDTO addUserResponseDTO = new AddUserDTO(HttpStatus.CREATED.value(), HttpStatus.CREATED, BASE_URL_PLUS_ID);
+        AddUserDTO addUserResponseDTO = new AddUserDTO(BASE_URL_PLUS_ID);
 
         when(userService.addUser(addUserDTO)).thenReturn(addUserResponseDTO);
 
         mockMvc.perform(post(BASE_URL)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(addUserDTO)))
-                .andExpect(jsonPath("$.statusCode").value(addUserResponseDTO.statusCode()))
-                .andExpect(jsonPath("$.status").value("CREATED"))
                 .andExpect(jsonPath("$.location").value(addUserResponseDTO.location()))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
