@@ -114,20 +114,20 @@ class UserControllerTest {
     @Test
     @DisplayName("Should return exception date from bigger than to")
     void getUsersByBirtDateFromBiggerThanTo() throws Exception {
-        RangeDatesDTO rangeDatesDTO = new RangeDatesDTO(
-                LocalDate.of(2009,4,30),
-                LocalDate.of(2006, 4, 30));
+        LocalDate from = LocalDate.of(2009,4,30);
+        LocalDate to = LocalDate.of(2006, 4, 30);
         Map<String, String> errors = new HashMap<>();
         errors.put("timestamp", String.valueOf(LocalDateTime.now()));
         errors.put("status", "400");
         errors.put("error", "From bigger than to");
 
-        when(userService.getUsersByBirtDate(rangeDatesDTO))
+        when(userService.getUsersByBirtDate(from, to))
                 .thenThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "From bigger than to"));
 
         mockMvc.perform(get(BASE_URL)
                 .contentType("application/json")
-                .content(objectMapper.writeValueAsString(rangeDatesDTO)))
+                .param("from", String.valueOf(from))
+                        .param("to", String.valueOf(to)))
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> {
                     assertInstanceOf(ResponseStatusException.class, result.getResolvedException());
@@ -138,17 +138,17 @@ class UserControllerTest {
     @Test
     @DisplayName("Should return OK status, and empty list")
     void getUsersByBirtDate() throws Exception {
-        RangeDatesDTO rangeDatesDTO = new RangeDatesDTO(
-                LocalDate.of(2004,4,30),
-                LocalDate.of(2006, 4, 30));
+        LocalDate from = LocalDate.of(2004,4,30);
+        LocalDate to = LocalDate.of(2006, 4, 30);
         List<GetUserDTO> getUserDTOS = new ArrayList<>();
 
-        when(userService.getUsersByBirtDate(rangeDatesDTO))
+        when(userService.getUsersByBirtDate(from, to))
                 .thenReturn(getUserDTOS);
 
         mockMvc.perform(get(BASE_URL)
                         .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(rangeDatesDTO)))
+                        .param("from", String.valueOf(from))
+                        .param("to", String.valueOf(to)))
                 .andExpect(status().isOk());
     }
 }

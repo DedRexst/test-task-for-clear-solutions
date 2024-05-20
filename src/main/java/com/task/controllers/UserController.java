@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,8 +43,8 @@ public class UserController {
     }
 
     @GetMapping
-    public List<GetUserDTO> getUsersByBirtDate(@RequestBody RangeDatesDTO rangeDatesDTO) {
-        return userService.getUsersByBirtDate(rangeDatesDTO);
+    public List<GetUserDTO> getUsersByBirtDate(@RequestParam(required = false) LocalDate from, @RequestParam(required = false) LocalDate to) {
+        return userService.getUsersByBirtDate(from, to);
     }
 
 }

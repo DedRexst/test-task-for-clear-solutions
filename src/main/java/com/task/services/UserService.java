@@ -6,6 +6,7 @@ import com.task.dtos.request.RangeDatesDTO;
 import com.task.dtos.response.AddUserDTO;
 import com.task.dtos.response.GetUserDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,5 +19,5 @@ public interface UserService {
 
     void deleteUser(UUID id);
 
-    List<GetUserDTO> getUsersByBirtDate(RangeDatesDTO rangeDatesDTO);
+    List<GetUserDTO> getUsersByBirtDate(LocalDate from, LocalDate to);
 }

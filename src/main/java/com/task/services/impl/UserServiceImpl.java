@@ -74,16 +74,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<GetUserDTO> getUsersByBirtDate(RangeDatesDTO rangeDatesDTO) {
-        if (rangeDatesDTO.from() != null && rangeDatesDTO.to() != null) {
-            if (rangeDatesDTO.from().compareTo(rangeDatesDTO.to()) <= 0) {
-                return convertListUserToGetUserDTO(userRepository.findAllByBirthDateGreaterThanEqualAndBirthDateLessThanEqual(rangeDatesDTO.from(),
-                        rangeDatesDTO.to()));
+    public List<GetUserDTO> getUsersByBirtDate(LocalDate from, LocalDate to) {
+        if (from != null && to != null) {
+            if (from.compareTo(to) <= 0) {
+                return convertListUserToGetUserDTO(userRepository.findAllByBirthDateGreaterThanEqualAndBirthDateLessThanEqual(from,
+                        to));
             } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "From bigger than to");
-        } else if (rangeDatesDTO.from() != null) {
-            return convertListUserToGetUserDTO(userRepository.findAllByBirthDateGreaterThanEqual(rangeDatesDTO.from()));
-        } else if (rangeDatesDTO.to() != null){
-            return convertListUserToGetUserDTO(userRepository.findAllByBirthDateLessThanEqual(rangeDatesDTO.to()));
+        } else if (from != null) {
+            return convertListUserToGetUserDTO(userRepository.findAllByBirthDateGreaterThanEqual(from));
+        } else if (to != null){
+            return convertListUserToGetUserDTO(userRepository.findAllByBirthDateLessThanEqual(to));
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "From and to is null");
     }

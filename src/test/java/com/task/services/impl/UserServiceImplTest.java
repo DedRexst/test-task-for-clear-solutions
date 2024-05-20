@@ -101,17 +101,16 @@ class UserServiceImplTest {
 
     @Test
     void getUsersByBirtDate() {
-        RangeDatesDTO rangeDatesDTO = new RangeDatesDTO(
-                LocalDate.of(2004,4,30),
-                LocalDate.of(2004, 4, 30));
+        LocalDate from = LocalDate.of(2004,4,30);
+        LocalDate to = LocalDate.of(2004, 4, 30);
         List<User> users = new ArrayList<>();
         User bob = new User("email@email.com", "Bob","Stallone", LocalDate.of(2004, 4, 30),"Lviv", null);
         users.add(bob);
 
-        when(userRepository.findAllByBirthDateGreaterThanEqualAndBirthDateLessThanEqual(rangeDatesDTO.from(), rangeDatesDTO.to())).thenReturn(users);
+        when(userRepository.findAllByBirthDateGreaterThanEqualAndBirthDateLessThanEqual(from, to)).thenReturn(users);
         when(userMapper.entityToDTO(bob)).thenReturn(new GetUserDTO("email@email.com", "Bob","Stallone", LocalDate.of(2004, 4, 30),"Lviv", null));
 
-        List<GetUserDTO> getUserDTOS = userService.getUsersByBirtDate(rangeDatesDTO);
+        List<GetUserDTO> getUserDTOS = userService.getUsersByBirtDate(from, to);
 
         assertTrue(getUserDTOS.get(0).birthDate().equals(LocalDate.of(2004, 4, 30)));
     }
